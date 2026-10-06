@@ -1,0 +1,43 @@
+{% extends 'farmaciaapp/base.html' %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card bg-light border-primary border-start border-5 shadow-sm h-100">
+            <div class="card-body">
+                <h5 class="text-primary"><i class="bi bi-info-circle-fill"></i> Modo Edición</h5>
+                <p class="small text-muted mt-3">Estás modificando un registro existente en la base de datos MySQL.</p>
+                <hr>
+                <p class="mb-1 fw-bold">Medicamento actual:</p>
+                <p class="text-primary fs-5">{{ form.instance.nombre }}</p>
+                <div class="alert alert-warning mt-4 small border-0">
+                    <i class="bi bi-exclamation-triangle"></i> Verifica el stock y precios antes de guardar.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <div class="card shadow-sm border-0">
+            <div class="card-header bg-white pb-0 border-0 pt-4 px-4">
+                <h4 class="fw-bold text-dark">Actualizar Datos</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    {% csrf_token %}
+                    <div class="row bg-light p-3 rounded-3 mb-4">
+                        {{ form.as_p }}
+                    </div>
+                    
+                    <div class="d-flex justify-content-end gap-2 mt-2">
+                        <a href="{% url 'listar_medicamentos' %}" class="btn btn-secondary px-4">Cancelar</a>
+                        <button type="submit" class="btn btn-primary px-4">
+                            <i class="bi bi-arrow-clockwise"></i> Actualizar Registro
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
