@@ -5,7 +5,7 @@
     <h2 class="text-secondary border-bottom border-success pb-2 border-3">Inventario Actual</h2>
 </div>
 
-<div class="card card-custom">
+<div class="card card-custom shadow-sm">
     <div class="card-body p-0">
         <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
@@ -42,14 +42,50 @@
                             {% endif %}
                         </td>
                         <td class="text-center pe-4">
-                            <a href="{% url 'editar_medicamento' m.id %}" class="btn btn-sm btn-outline-primary shadow-sm me-1">
-                                <i class="bi bi-pencil-square"></i> Editar
+                            <button type="button" class="btn btn-sm btn-outline-info shadow-sm me-1" data-bs-toggle="modal" data-bs-target="#modalDesc{{ m.id }}" title="Ver Detalles">
+                                <i class="bi bi-info-circle"></i> Info
+                            </button>
+
+                            <a href="{% url 'editar_medicamento' m.id %}" class="btn btn-sm btn-outline-primary shadow-sm me-1" title="Editar">
+                                <i class="bi bi-pencil-square"></i>
                             </a>
-                            <a href="{% url 'eliminar_medicamento' m.id %}" class="btn btn-sm btn-outline-danger shadow-sm">
+                            <a href="{% url 'eliminar_medicamento' m.id %}" class="btn btn-sm btn-outline-danger shadow-sm" title="Eliminar">
                                 <i class="bi bi-trash"></i>
                             </a>
                         </td>
                     </tr>
+
+                    <div class="modal fade" id="modalDesc{{ m.id }}" tabindex="-1" aria-labelledby="modalLabel{{ m.id }}" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow">
+                                <div class="modal-header bg-success text-white">
+                                    <h5 class="modal-title fw-bold" id="modalLabel{{ m.id }}">
+                                        <i class="bi bi-capsule me-2"></i>{{ m.nombre }}
+                                    </h5>
+                                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-start p-4">
+                                    <div class="bg-light p-3 rounded mb-3 border">
+                                        <p class="mb-1"><strong><i class="bi bi-building text-secondary me-2"></i>Laboratorio:</strong> {{ m.laboratorio }}</p>
+                                        <p class="mb-0"><strong><i class="bi bi-calendar-event text-secondary me-2"></i>Vencimiento:</strong> {{ m.fecha_vencimiento|date:"d/m/Y" }}</p>
+                                    </div>
+                                    
+                                    <h6 class="fw-bold text-success border-bottom pb-2">Descripción e Indicaciones</h6>
+                                    <p class="text-muted mt-2">
+                                        {% if m.descripcion %}
+                                            {{ m.descripcion|linebreaks }}
+                                        {% else %}
+                                            <i class="bi bi-exclamation-circle text-warning me-1"></i> No hay descripción registrada para este fármaco.
+                                        {% endif %}
+                                    </p>
+                                </div>
+                                <div class="modal-footer bg-light">
+                                    <button type="button" class="btn btn-secondary px-4" data-bs-dismiss="modal">Cerrar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     {% empty %}
                     <tr>
                         <td colspan="6" class="text-center text-muted py-5">
